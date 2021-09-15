@@ -6,15 +6,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pet/shared/input_decor.dart';
 
-class SignUp extends StatefulWidget {
-  SignUp({Key? key, this.viewFunc}) : super(key: key);
-  final Function? viewFunc;
+class SignIn extends StatefulWidget {
+  SignIn({Key? key, required this.viewFunc}) : super(key: key);
+  Function? viewFunc;
 
   @override
-  _SignUpState createState() => _SignUpState();
+  _SignInState createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignInState extends State<SignIn> {
   bool _isSeen = true;
   void checkedSeen() {
     setState(() {
@@ -22,7 +22,6 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  bool? _isChecked = false;
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -44,7 +43,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   Text(
-                    'Create An Account',
+                    'Login To Pet Animal',
                     style: GoogleFonts.aldrich(
                       fontWeight: FontWeight.w700,
                       fontSize: 25,
@@ -59,25 +58,7 @@ class _SignUpState extends State<SignUp> {
                           TextFormField(
                             maxLines: 1,
                             decoration: inputDecor.copyWith(
-                              hintText: 'Fullname',
-                            ),
-                          ),
-                          SizedBox(
-                            height: _size.height * 0.1 / 4,
-                          ),
-                          TextFormField(
-                            maxLines: 1,
-                            decoration: inputDecor.copyWith(
                               hintText: 'Email',
-                            ),
-                          ),
-                          SizedBox(
-                            height: _size.height * 0.1 / 4,
-                          ),
-                          TextFormField(
-                            maxLines: 1,
-                            decoration: inputDecor.copyWith(
-                              hintText: 'Mobile',
                             ),
                           ),
                           SizedBox(
@@ -88,57 +69,71 @@ class _SignUpState extends State<SignUp> {
                             maxLines: 1,
                             decoration: inputDecor.copyWith(
                               hintText: 'password',
+                              suffixIcon: IconButton(
+                                onPressed: checkedSeen,
+                                icon: Icon(FontAwesomeIcons.eye),
+                              ),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                visualDensity: VisualDensity.comfortable,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                                value: _isChecked,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _isChecked = val;
-                                  });
-                                },
-                              ),
-                              Text(
-                                'I have accept all right and terms conditions.',
-                                style: TextStyle(
-                                  wordSpacing: 1.0,
-                                ),
-                              )
-                            ],
+                          SizedBox(
+                            height: _size.height * 0.1 / 4,
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             width: double.infinity,
                             child: ElevatedButton(
-                              child: Text('Sign Up'),
+                              child: Text('Login'),
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
                             ),
                           ),
+                          SizedBox(
+                            height: _size.height * 0.1 / 5,
+                          ),
+                          Center(
+                            child: Text(
+                              'or',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: _size.height * 0.1 / 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _socialLoginFunc(
+                                  FontAwesomeIcons.facebookF, 'Facebook'),
+                              _socialLoginFunc(
+                                  FontAwesomeIcons.google, 'Google'),
+                              _socialLoginFunc(
+                                  FontAwesomeIcons.instagram, 'Instagram'),
+                            ],
+                          ),
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(20.0),
                             child: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: 'Already have an account?',
-                                  style: TextStyle(color: Colors.black),
+                                  text:
+                                      'If You Don\'t Have An Account With Us?',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                  ),
                                 ),
                                 TextSpan(
-                                  text: '  Sign In',
+                                  text: ' Create Account',
                                   style: TextStyle(
                                     color: Colors.blue,
+                                    fontSize: 15.0,
                                   ),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      widget.viewFunc!();
-                                    },
+                                    ..onTap = () => widget.viewFunc!(),
                                 ),
                               ]),
                             ),
@@ -151,6 +146,25 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _socialLoginFunc(IconData icon, String name) {
+    return GestureDetector(
+      onTap: () {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(name)));
+      },
+      child: Card(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        margin: EdgeInsets.symmetric(horizontal: 15.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          maxRadius: 20,
+          child: FaIcon(icon, size: 20),
         ),
       ),
     );
